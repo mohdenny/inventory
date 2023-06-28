@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb+srv://admin:5L59PnhbO6zJxWHT@nutech-inventory-db.nshx60y.mongodb.net/inventory?retryWrites=true&w=majority",
+    "jwtSecret": "mysecrettoken"
+}
