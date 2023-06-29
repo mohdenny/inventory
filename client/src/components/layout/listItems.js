@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -23,21 +23,28 @@ const dataListMenu = [
     text: "About",
     icon: <InfoIcon/>
   },
-]
+];
 
-export const mainListItems = (setSelectedItem) => (
-  <>
-    {
-      dataListMenu.map((dataList, index) => (
-        <Link key={index} to={dataList.link} style={{ textDecoration: 'none', color: 'black' }}>
-          <ListItemButton onClick={() => setSelectedItem(dataList.text)}>
-            <ListItemIcon>
-              {dataList.icon}
-            </ListItemIcon>
-            <ListItemText primary={dataList.text} />
-          </ListItemButton>
-        </Link>
-      ))
-    }
-  </>
-);
+export const mainListItems = (setSelectedItem) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const location = useLocation(); // Get the current location
+
+  return (
+    <>
+      {dataListMenu.map((dataList, index) => {
+        const isActive = location.pathname === dataList.link;
+
+        return (
+          <Link key={index} to={dataList.link} style={{ textDecoration: 'none', color: 'black' }}>
+            <ListItemButton onClick={() => setSelectedItem(dataList.text)} selected={isActive}>
+              <ListItemIcon>
+                {dataList.icon}
+              </ListItemIcon>
+              <ListItemText primary={dataList.text} />
+            </ListItemButton>
+          </Link>
+        );
+      })}
+    </>
+  );
+};
