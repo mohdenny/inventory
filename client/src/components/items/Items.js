@@ -6,47 +6,78 @@ import { connect } from 'react-redux';
 import { getItems } from '../../actions/item';
 import FormItemModal from './FormItemModal';
 import AlertBox from '../layout/AlertBox';
+import ItemModal from './ItemModal';
 
 const ITEMS_PER_PAGE = 6;
 
 const Items = ({ getItems, item: { items } }) => {
   useEffect(() => {
     getItems();
-  }, [getItems, items]);
+  }, [getItems]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleOpenModal = (item) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = items ? items.length : 0;
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredItems, setFilteredItems] = useState([]);
+  
+  useEffect(() => {
+    if (items) {
+      setFilteredItems(items.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase())));
+    }
+  }, [items, searchQuery]);
+
+  const totalItems = filteredItems ? filteredItems.length : 0;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentCards = items ? items.slice(startIndex, endIndex) : [];
+  const currentCards = filteredItems ? filteredItems.slice(startIndex, endIndex) : [];
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
 
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(1);
+  };
+
   return (
     <div>
       <AlertBox/>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-        <FormItemModal />
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
+        <input
+          type="text"
+          placeholder="Search items"
+          value={searchQuery}
+          onChange={handleSearch}
+          style={{ padding: '8px', marginBottom: '8px', width: '300px' }}
+        />
+
+        <FormItemModal style={{ marginLeft: '16px' }} />
       </div>
-      {items && totalItems > 0 ? (
+
+      {filteredItems && totalItems > 0 ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gridGap: '16px' }}>
-          {items &&
-            currentCards.map((card, index) => (
-              <Card key={index}>
-                <CardMedia component="img" height="140" image='' alt={card.name} />
-                <CardContent>
-                  <Typography variant="h5" component="div">
-                    {card.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Jumlah stock: {card.stock}
-                  </Typography>
-                </CardContent>
-              </Card>
-            ))}
+          {currentCards.map((card, index) => (
+            <Card key={index} onClick={() => handleOpenModal(card)}>
+              <CardMedia component="img" height="140" image={`http://localhost:5000/${card.path}`} alt={card.name} />
+              <CardContent>
+                <Typography variant="h5" component="div">
+                  {card.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Jumlah stock: {card.stock}
+                </Typography>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       ) : (
         <Card>
@@ -63,6 +94,10 @@ const Items = ({ getItems, item: { items } }) => {
         onChange={handlePageChange}
         style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}
       />
+
+      {selectedItem && (
+        <ItemModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} item={selectedItem} />
+      )}
     </div>
   );
 };

@@ -1,13 +1,20 @@
 const express = require('express');
 const connectDB = require('./config/db');
+const cors = require('cors');
 
 const app = express();
 
 // connect database
 connectDB();
 
+app.use(cors());
+app.use('/public/uploads', express.static('public/uploads'));
+
 // init middleware
 app.use(express.json());
+app.use(express.urlencoded({
+    extended:true
+}))
 
 // define route
 app.use('/api/users', require('./routes/api/users'));

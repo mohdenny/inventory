@@ -6,6 +6,7 @@ import {
   DELETE_ITEM,
   ADD_ITEM,
   GET_ITEM,
+  UPDATE_ITEM
 } from './types';
 
 // Get items
@@ -46,6 +47,7 @@ export const deleteItem = (id) => async (dispatch) => {
 
 // Add item
 export const addItem = (formData) => async (dispatch) => {
+
   try {
     const res = await api.post('/items', formData);
 
@@ -62,6 +64,26 @@ export const addItem = (formData) => async (dispatch) => {
     });
   }
 };
+
+// Update item
+export const updateItem = (id, formData) => async (dispatch) => {
+  try {
+    const res = await api.put(`/items/${id}`, formData);
+
+    dispatch({
+      type: UPDATE_ITEM,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Item Updated', 'success'));
+  } catch (err) {
+    dispatch({
+      type: ITEM_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 
 // Get item
 export const getItem = (id) => async (dispatch) => {

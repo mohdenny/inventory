@@ -22,7 +22,7 @@ router.post(
         }
 
         const { name, buyingPrice, sellingPrice, stock } = req.body;
-        const { originalname, mimetype, size } = req.file;
+        console.log(req.body)
 
         try {
             let item = await Item.findOne({ name });
@@ -33,13 +33,14 @@ router.post(
                     .json({ errors: [{ msg: 'Item already exists' }] });
             };
 
+            if (!req.file) {
+                console.log(req.file);
+                return res.status(400).json({ msg: 'No file uploaded.'});
+            }
+
             const newItem = new Item({
-                photo: {
-                    filename: originalname,
-                    contentType: mimetype,
-                    size: size,
-                    url: req.file.path,
-                },
+                photo: req.file.originalname,
+                path: req.file.path,
                 name: name,
                 buyingPrice: buyingPrice,
                 sellingPrice: sellingPrice,
@@ -100,7 +101,7 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
             return res.status(404).json({ msg: 'Item not found' });
         }
 
-        const filePath = item.photo.url;
+        const filePath = item.path;
         if (filePath) {
             fs.unlink(filePath, (err) => {
             if (err) {
@@ -134,25 +135,24 @@ router.put(
         }
 
         const { name, buyingPrice, sellingPrice, stock } = req.body;
-        const { originalname, mimetype, size } = req.file;
 
         const updateItem = {
-            photo: {
-                filename: originalname,
-                contentType: mimetype,
-                size: size,
-                url: req.file.path
-            },
             name: name,
             buyingPrice: buyingPrice,
             sellingPrice: sellingPrice,
             stock: stock,
             edited: Date.now()
-        }
+        };
+          
+            if (req.file) {
+                updateItem.photo = req.file.originalname;
+                updateItem.path = req.file.path;
+            }
+            
 
         try {
             let item = await Item.findById(req.params.id);
-            const filePath = item.photo.url;
+            const filePath = item.path;
             if (filePath) {
                 fs.unlink(filePath, (err) => {
                     if (err) {

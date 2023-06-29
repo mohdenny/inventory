@@ -4,6 +4,7 @@ import {
   DELETE_ITEM,
   ADD_ITEM,
   GET_ITEM,
+  UPDATE_ITEM
 } from '../actions/types';
 
 const initialState = {
@@ -39,6 +40,14 @@ const itemReducer = (state = initialState, action) => {
       return {
         ...state,
         items: state.items.filter((item) => item._id !== payload),
+        loading: false
+      };
+    case UPDATE_ITEM:
+      return {
+        ...state,
+        items: state.items.map(item =>
+          item._id === payload._id ? payload : item
+        ),
         loading: false
       };
     case ITEM_ERROR:

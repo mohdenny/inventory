@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AppLayout from './components/layout/AppLayout';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-import Dashboard from './components/dashboard/Dashboard';
 import Items from './components/items/Items';
-import Help from './components/help/Help';
+import About from './components/about/About';
+import Dashboard from './components/dashboard/Dashboard';
 // import Post from './components/post/Post';
 // import NotFound from './components/layout/NotFound';
 import PrivateRoute from './components/routing/PrivateRoute';
@@ -39,13 +39,12 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Login/>} />
           <Route path="register" element={<Register/>} />
-          {/* <Route path="login" element={<Login />} /> */}
           <Route
             path="dashboard"
             element={<AppLayout><PrivateRoute component={Dashboard}/></AppLayout>}
           />
           <Route path="items" element={<AppLayout><PrivateRoute component={Items} /></AppLayout>} />
-          <Route path="help" element={<AppLayout><PrivateRoute component={Help} /></AppLayout>} />
+          <Route path="about" element={<AppLayout><PrivateRoute component={About} /></AppLayout>} />
         </Routes>
       </Router>
     </Provider>

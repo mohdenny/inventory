@@ -5,7 +5,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
-import HelpIcon from '@mui/icons-material/Help';
+import InfoIcon from '@mui/icons-material/Info';
 
 const dataListMenu = [
   {
@@ -19,9 +19,9 @@ const dataListMenu = [
     icon: <Inventory2Icon/>
   },
   {
-    link: "/help",
-    text: "Help",
-    icon: <HelpIcon/>
+    link: "/about",
+    text: "About",
+    icon: <InfoIcon/>
   },
 ]
 

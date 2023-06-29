@@ -3,25 +3,11 @@ const Schema = mongoose.Schema;
 
 const ItemSchema = new Schema({
     photo: {
-        itemId: {
-            type: Schema.Types.ObjectId
-        },
-        filename: {
-            type: String
-        },
-        url: {
-            type: String
-        },
-        contentType: {
-            type: String
-        },
-        size: {
-            type: Number
-        },
-        createdAt: {
-            type: Date,
-            default: Date.now
-        }
+        type: String,
+        required: true,
+    },
+    path: {
+        type: String,
     },
     name: {
         type: String,

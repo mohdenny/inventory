@@ -34,7 +34,7 @@ const Copyright = (props) => {
       {'.'}
     </Typography>
   );
-}
+};
 
 const drawerWidth = 240;
 
@@ -85,9 +85,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-const AppLayout = ({ auth: { isAuthenticated }, logout, children }) => {
+const AppLayout = ({ auth: { isAuthenticated, user }, logout, children }) => {
   const [selectedItem, setSelectedItem] = useState('Dashboard');
-  
+
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -123,6 +123,15 @@ const AppLayout = ({ auth: { isAuthenticated }, logout, children }) => {
               sx={{ flexGrow: 1 }}
             >
               {selectedItem}
+            </Typography>
+            <Typography
+              component="span"
+              variant="subtitle1"
+              color="inherit"
+              noWrap
+              sx={{ marginRight: '12px' }}
+            >
+              {isAuthenticated && user && `Welcome, ${user.name}`}
             </Typography>
             <IconButton color="inherit" onClick={logout}>
               <LogoutIcon />
@@ -168,7 +177,7 @@ const AppLayout = ({ auth: { isAuthenticated }, logout, children }) => {
       </Box>
     </ThemeProvider>
   );
-}
+};
 
 AppLayout.propTypes = {
   logout: PropTypes.func.isRequired,
