@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -14,7 +14,8 @@ import {
   Typography,
   Divider,
   IconButton,
-  Container
+  Container,
+  useMediaQuery
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import MuiDrawer from '@mui/material/Drawer';
@@ -83,18 +84,24 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 // TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
+const theme = createTheme();
 
 const AppLayout = ({ auth: { isAuthenticated, user }, logout, children }) => {
   const [selectedItem, setSelectedItem] = useState('Dashboard');
 
-  const [open, setOpen] = useState(true);
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Use the theme for media queries
+  const [open, setOpen] = useState(!isMobile);
+
   const toggleDrawer = () => {
-    setOpen(!open);
+    if (!isMobile) setOpen(!open);
   };
 
+  useEffect(() => {
+    setOpen(!isMobile); // Close the menu when the screen is resized to mobile size
+  }, [isMobile]);
+
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar position="absolute" open={open}>

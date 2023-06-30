@@ -47,11 +47,10 @@ const FormItemModal = ({ addItem }) => {
     <div>
       <Button 
         variant="contained"
-        startIcon={<AddIcon />} 
         onClick={handleOpen}
         size="large"
       >
-          Add Item
+        <AddIcon />
       </Button>
       <Modal open={open} onClose={handleClose}>
         <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'white', padding: '16px', outline: 'none' }}>
