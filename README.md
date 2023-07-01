@@ -1,4 +1,4 @@
-# Cara menjalankan Aplikasi Web Imventory
+# Cara menjalankan Aplikasi Web Inventory
 1. Download/clone repository
 2. Pada directory server sisi backend, "npm install"
 3. Kemudian pada directory Client sisi frontend, "npm install --force"
