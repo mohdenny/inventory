@@ -68,11 +68,14 @@ const ItemModal = ({ isOpen, onClose, item, updateItem, deleteItem }) => {
       <DialogTitle sx={{ fontWeight: 'bold', fontSize: '24px' }}>{isEditing ? 'Edit Item' : item.name}</DialogTitle>
       <DialogContent>
         {isEditing ? (
-          <input type="file" accept="image/*" onChange={(e) => setPhoto(e.target.files[0])} />
+          <>
+            <input type="file" accept="image/*" onChange={(e) => setPhoto(e.target.files[0])} />
+            <Typography variant="caption">Format JPG, JPEG and PNG. Max photo 100 kb</Typography>
+          </>
         ) : (
-          <CardMedia component="img" height="300" image={`http://localhost:5000/${item.path}`} alt={item.name} />
+          <CardMedia component="img" height="300" image={`https://nutech-inventory-backend.onrender.com/${item.path}`} alt={item.name} />
         )}
-        <Typography variant="body1">
+        <Typography variant="body1" sx={{ marginTop:'1rem' }}>
           Harga beli:{' '}
           {isEditing ? (
             <TextField value={buyingPrice} onChange={(e) => setBuyingPrice(e.target.value)} fullWidth />

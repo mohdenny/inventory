@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal, TextField } from '@mui/material';
+import { Button, Modal, TextField, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -57,6 +57,7 @@ const FormItemModal = ({ addItem }) => {
           <h2>Add Item</h2>
           <form onSubmit={handleSubmit} encType="multipart/form-data">
             <input type="file" accept="image/*" onChange={(e) => setPhoto(e.target.files[0])} />
+            <Typography variant="caption">Format JPG, JPEG and PNG. Max photo 100 kb</Typography>
             <TextField
               label="Name"
               value={name}
